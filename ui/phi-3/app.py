@@ -179,7 +179,7 @@ def chat_fn(message, history):
 # --------------------------
 demo = gr.ChatInterface(
     fn=chat_fn,
-    title="Laurapp — Fine-Tuned Phi-3.5 Mini",
+    title="Fine-Tuned Phi-3.5 Mini",
     description="A fine-tuned assistant powered by a merged Phi-3.5 model.",
 )
 

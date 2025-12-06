@@ -6,8 +6,9 @@ import requests
 import re
 import os
 
-BASE_MODEL = "unsloth/Llama-3.2-3B-Instruct"
-LORA_REPO = "lauraloretta/laurapp-lab2"
+BASE_MODEL = "unsloth/Llama-3.2-1B-Instruct"
+LORA_REPO = "lauraloretta/llama-1B-10000-params-model-centric"
+
 
 device = "cpu"
 
@@ -23,7 +24,6 @@ base_model = AutoModelForCausalLM.from_pretrained(
 )
 base_model.to(device)
 
-
 if hasattr(base_model, "hf_device_map"):
     del base_model.hf_device_map
 
@@ -32,34 +32,6 @@ print("Loading LoRA adapter...")
 model = PeftModel.from_pretrained(base_model, LORA_REPO, device_map=None)
 model.to(device)
 model.eval()
-
-
-print("=== TEST RÁPIDO DEL MODELO ===")
-
-messages = [
-    {"role": "system", "content": "You are a helpful assistant."},
-    {"role": "user", "content": "What is 2 + 2?"},
-]
-
-input_ids = tokenizer.apply_chat_template(
-    messages,
-    tokenize=True,
-    add_generation_prompt=True,
-    return_tensors="pt",
-)
-
-with torch.no_grad():
-    out = model.generate(
-        input_ids=input_ids,
-        max_new_tokens=20,
-        do_sample=False,
-        eos_token_id=tokenizer.eos_token_id,
-        pad_token_id=tokenizer.eos_token_id,
-    )
-
-print("TEST OUTPUT:", tokenizer.decode(out[0, input_ids.shape[1]:], skip_special_tokens=True))
-print("=== FIN TEST ===")
-
 
 ner_pipeline = pipeline(
     "token-classification",
@@ -91,13 +63,12 @@ def extract_city_from_text(user_text: str, default_city: str = "Stockholm") -> s
     except Exception:
         return default_city
 
-
     locs = [e["word"] for e in ents if e.get("entity_group") in ("LOC", "ORG", "PER", "MISC")]
-  
 
     if not locs:
         return default_city
 
+    # Choose the last mention one (usually the most meaningful)
     city = locs[-1].strip()
     # Small cleanup
     city = city.strip(" ,.?!")
@@ -177,7 +148,7 @@ def get_external_context(user_text: str) -> str:
                 tmin = dw.get("temperature_2m_min", [None])[0]
                 uv = dw.get("uv_index_max", [None])[0]
 
-                # Hourly
+                # Hourly 
                 humidity = hourly.get("relative_humidity_2m", [None])[0]
                 feels_like = hourly.get("apparent_temperature", [None])[0]
                 cloudcover = hourly.get("cloudcover", [None])[0]
@@ -200,6 +171,7 @@ def get_external_context(user_text: str) -> str:
             print("Exception:", e)
             parts.append("Could not fetch current weather due to an error.")
 
+    # Join all tool outputs into one context string
     if parts:
         context = (
             "You have access to the following external, real-time information. "
@@ -235,8 +207,7 @@ def chat_fn(message, history):
         "content": "You are Laurapp, a helpful AI assistant."
     })
 
-    
-    # 4) Inject external tool context as another system message (if any)
+
     if external_context:
         messages.insert(1, {
             "role": "system",
@@ -244,21 +215,18 @@ def chat_fn(message, history):
         })
 
 
-    # 2) Historial
     for m in history:
         if isinstance(m, dict):
             role = m.get("role", "user")
             content = extract_text(m.get("content", ""))
             messages.append({"role": role, "content": content})
         elif isinstance(m, (list, tuple)) and len(m) == 2:
-            # Soporte legacy si algún día usas type="tuples"
             user_msg, bot_msg = m
             if user_msg:
                 messages.append({"role": "user", "content": user_msg})
             if bot_msg:
                 messages.append({"role": "assistant", "content": bot_msg})
 
-    # 6) Current user turn
     messages.append({"role": "user", "content": user_text})
 
     prompt = tokenizer.apply_chat_template(
@@ -291,10 +259,9 @@ def chat_fn(message, history):
 
 demo = gr.ChatInterface(
     fn=chat_fn,
-    title="Laurapp Lab 2 – Fine-tuned Llama 3.2",
+    title="Fine-tuned Llama 1B - Model centric",
     description="Small demo running on CPU with a fine-tuned LoRA adapter.",
 )
 
 if __name__ == "__main__":
     demo.launch()
-
