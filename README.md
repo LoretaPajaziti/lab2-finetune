@@ -2,7 +2,7 @@
 
 ### Fine-Tuning Llama-1B with PEFT (LoRA): Model-Centric and Data-Centric Improvements
 
-1. Introduction
+### 1. Introduction
 
 This project implements parameter-efficient fine-tuning (PEFT) of a Large Language Model using LoRA. The objective is to fine-tune Llama-1B on the FineTome-100k instruction dataset, deploy the model to a CPU-only environment, and evaluate different improvement strategies:
 
@@ -12,8 +12,8 @@ This project implements parameter-efficient fine-tuning (PEFT) of a Large Langua
 
 - Model-centric fine-tuning
 
-2. Dataset
-   2.1 FineTome-100k
+### 2. Dataset
+2.1 FineTome-100k
 
 FineTome-100k is an instruction-tuning dataset containing diverse tasks:
 
