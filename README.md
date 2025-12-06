@@ -94,13 +94,14 @@ The following metrics were collected during testing:
 
 The aggregated results for all prompts are shown below:
 
-| Metric            | Model-Centric | Data-Centric | Baseline |
-| ----------------- | ------------- | ------------ | -------- |
-| **Latency (sec)** | 40.38         | **36.53**    | 41.36    |
-| **Output Tokens** | 161.2         | **166.9**    | 148.3    |
-| **Tokens/sec**    | 4.04          | **4.59**     | 3.57     |
-| **RAM (MB)**      | **5278**      | 5962         | 5616     |
-| **Coherence**     | 1.0           | 1.0          | 1.0      |
+| Metric            | Model-Centric | Data-Centric | Baseline  |
+| ----------------- | ------------- | ------------ | --------- |
+| **Latency (sec)** | 40.38         | 41.36        | **36.53** |
+| **Output Tokens** | 161.2         | 148.3        | **166.9** |
+| **Tokens/sec**    | 4.04          | 3.57         | **4.59**  |
+| **RAM (MB)**      | **5278**      | 5616         | **5962**  |
+| **Coherence**     | 1.0           | 1.0          | 1.0       |
+
 
 ### 6. Qualitative Evaluation
 6.1 Evaluation Method
