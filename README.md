@@ -2,7 +2,7 @@
 
 ### Fine-Tuning Llama-1B with PEFT (LoRA): Model-Centric and Data-Centric Improvements
 
-1. Introduction
+### 1. Introduction
 
 This project implements parameter-efficient fine-tuning (PEFT) of a Large Language Model using LoRA. The objective is to fine-tune Llama-1B on the FineTome-100k instruction dataset, deploy the model to a CPU-only environment, and evaluate different improvement strategies:
 
@@ -12,8 +12,8 @@ This project implements parameter-efficient fine-tuning (PEFT) of a Large Langua
 
 - Model-centric fine-tuning
 
-2. Dataset
-   2.1 FineTome-100k
+### 2. Dataset
+2.1 FineTome-100k
 
 FineTome-100k is an instruction-tuning dataset containing diverse tasks:
 
@@ -24,17 +24,17 @@ FineTome-100k is an instruction-tuning dataset containing diverse tasks:
 - Code interpretation
 - Creative writing
 
-  2.2 Data-Centric Variant
+2.2 Data-Centric Variant
   | Configuration | Training Samples | Epochs |
   | ------------- | ---------------- | ------ |
   | Baseline | 10,000 | 1 |
   | Model-Centric | 10,000 | 1 |
   | Data-Centric | **20,000** | **2** |
 
-3. Training Configurations
+### 3. Training Configurations
    Three fine-tuning configurations were executed to evaluate baseline, data-centric, and model-centric strategies. All runs used Llama-1B as the base model and the FineTome-100k dataset (with variations in dataset size and optimization settings).
 
-   3.1 Baseline Run — Training Values
+3.1 Baseline Run — Training Values
 
 - Model: Llama-1B
 - Dataset: FineTome-100k
@@ -43,7 +43,7 @@ FineTome-100k is an instruction-tuning dataset containing diverse tasks:
 - Warm-up Steps: 0
 - Weight Decay: 0.01
 
-  3.2 Data-Centric Run — Training Values
+3.2 Data-Centric Run — Training Values
 
 - Model: Llama-1B
 - Data Source: FineTome-100k
@@ -52,7 +52,7 @@ FineTome-100k is an instruction-tuning dataset containing diverse tasks:
 - Warm-up Steps: 0
 - Weight Decay: 0.01
 
-  3.3 Model-Centric Run — Training Values
+3.3 Model-Centric Run — Training Values
 
 - Model: Llama-1B
 - Dataset: FineTome-100k
@@ -61,7 +61,7 @@ FineTome-100k is an instruction-tuning dataset containing diverse tasks:
 - Warm-up Steps: 5
 - Weight Decay: 0.025
 
-4. Model Export and UI Deployment
+### 4. Model Export and UI Deployment
 
 After training, each fine-tuned model was exported directly to Hugging Face, where the corresponding inference interfaces were deployed.
 A Gradio-based user interface was developed for interactive testing, and all UI implementations are provided in the /ui folder of this repository.
@@ -71,7 +71,7 @@ When users submit prompts containing weather-related terms, a preprocessing comp
 
 This deployment setup fulfills the requirement for a publicly accessible inference service running in a CPU-based environment on Hugging Face Spaces.
 
-5. Quantitative Evaluation
+### 5. Quantitative Evaluation
 
 In order to evaluate the performance of the three fine-tuned models, a dedicated performance testing script was created.
 This script contains 30 diverse prompts, covering reasoning, math, translation, code interpretation, creative tasks, and weather-related queries.
@@ -102,8 +102,8 @@ The aggregated results for all prompts are shown below:
 | **RAM (MB)**      | **5278**      | 5962         | 5616     |
 | **Coherence**     | 1.0           | 1.0          | 1.0      |
 
-6. Qualitative Evaluation
-   6.1 Evaluation Method
+### 6. Qualitative Evaluation
+6.1 Evaluation Method
 
 Each model was tested on 30 diverse prompts spanning:
 
@@ -122,7 +122,7 @@ Each response was scored on a 1–5 scale based on:
 - Relevance
 - Coherence
 
-  6.2 Results
+6.2 Results
   **Average Score Across All 30 Prompts**
   | Model | Average Score |
   | ------------- | ------------- |
@@ -137,7 +137,7 @@ Each response was scored on a 1–5 scale based on:
 | Baseline | 3.00 |
 | Data-Centric | 2.94 |
 
-7. Behavioral Analysis
+### 7. Behavioral Analysis
 
 ### Model-Centric Model
 
@@ -161,7 +161,7 @@ Each response was scored on a 1–5 scale based on:
 - Frequent repetition
 - Sometimes safer in factual queries (especially weather) due to refusals rather than hallucinations
 
-9. Future Work
+### 8. Future Work
 
 Several extensions can enhance the system:
 
