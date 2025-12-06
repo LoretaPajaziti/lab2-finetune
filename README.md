@@ -70,6 +70,16 @@ The user interface includes functionality for context-aware weather responses.
 When users submit prompts containing weather-related terms, a preprocessing component automatically extracts city names from the input and retrieves external weather data. This contextual information is then injected into the model prompt so that the interface can produce responses grounded in real-world conditions.
 
 This deployment setup fulfills the requirement for a publicly accessible inference service running in a CPU-based environment on Hugging Face Spaces.
+The deployed Gradio applications for each model can be accessed via the following URLs:
+
+Baseline Model UI:
+https://huggingface.co/spaces/lauraloretta/UI-llama-1B-full-epoch 
+
+Data-Centric Model UI:
+https://huggingface.co/spaces/lauraloretta/llama-1B-data-centric
+
+Model-Centric Model UI:
+https://huggingface.co/spaces/lauraloretta/llama-1B-model-centric
 
 ### 5. Quantitative Evaluation
 
